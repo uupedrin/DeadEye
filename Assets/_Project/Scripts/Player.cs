@@ -8,13 +8,11 @@ public class Player : MonoBehaviour
 	private GameObject line;
 	[SerializeField]
 	private Transform canon;
-	// Start is called before the first frame update
 	void Start()
 	{
 		line = GetComponentInChildren<ParticleSystem>().gameObject;
 	}
 
-	// Update is called once per frame
 	void Update()
 	{
 		PlayerInput();
@@ -28,21 +26,34 @@ public class Player : MonoBehaviour
 			
 			if(firstTouch.phase == TouchPhase.Began)
 			{
-				line.SetActive(true);
+				line.layer = LayerMask.NameToLayer("Default");
+				LookAtFinger(firstTouch);	
 			}
 			
 			if(firstTouch.phase == TouchPhase.Moved)
 			{
-				Vector3 target = Camera.main.ScreenToWorldPoint(transform.position - new Vector3(firstTouch.position.x, firstTouch.position.y, 0));
-				Vector3 lookPoint = new Vector3(target.x,target.y,transform.position.z);
-				canon.transform.LookAt(lookPoint);
+				LookAtFinger(firstTouch);	
 			}
 			
 			if(firstTouch.phase == TouchPhase.Ended)
 			{
-				line.SetActive(false);
+				line.layer = LayerMask.NameToLayer("DottedLine");
+				Shoot();
 			}
 			
 		}
+	}
+	
+	void LookAtFinger(Touch touch)
+	{
+		Vector3 fingerPos = Camera.main.ScreenToWorldPoint(touch.position);
+		Vector2 direction = fingerPos - transform.position;
+		float angle = Vector2.SignedAngle(Vector2.up, direction);
+		transform.eulerAngles = Vector3.forward * angle;
+	}
+	
+	void Shoot()
+	{
+		
 	}
 }
