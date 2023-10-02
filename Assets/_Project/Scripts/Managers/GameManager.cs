@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public static GameManager Instance;
+	private int score;
+	
+	public int Score 
+	{
+		get {return score;}
+		set 
+		{
+			score += value;
+		}
+	}
+	public UIController UiController;
+	private void Awake()
+	{
+		if(Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+		DontDestroyOnLoad(gameObject);
+		
+	}
+	public void RestartGame()
+	{
+		score = 0;
+	}
+	public void GameOver()
+	{
+		UiController.ChangeScene("EndGame");
+	}
 }

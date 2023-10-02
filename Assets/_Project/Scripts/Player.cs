@@ -8,6 +8,13 @@ public class Player : MonoBehaviour
 	private GameObject line;
 	[SerializeField]
 	private Transform canon;
+	
+	[Header("Projectile")]
+	[SerializeField]
+	private Transform projectileSpPoint;
+	[SerializeField]
+	private GameObject projectilePrefab;
+	
 	void Start()
 	{
 		line = GetComponentInChildren<ParticleSystem>().gameObject;
@@ -54,6 +61,7 @@ public class Player : MonoBehaviour
 	
 	void Shoot()
 	{
-		
+		GameObject projectile = Instantiate(projectilePrefab, projectileSpPoint.position, Quaternion.identity);
+		projectile.GetComponent<Projectile>().dir = projectileSpPoint.up;
 	}
 }

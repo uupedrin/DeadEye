@@ -4,15 +4,38 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private bool isBad;
+	
+	public bool IsBad
+	{
+		get
+		{
+			return isBad;
+		}
+		set
+		{
+			isBad = value;
+			
+			if(isBad)
+			{
+				//Change to bad material
+			}
+			else
+			{
+				//Change to original material
+			}
+		}
+	}
+	
+	private void OnDestroy()
+	{
+		if(isBad)
+		{
+			// Reduce points
+		}
+		else
+		{
+			// Increase points
+		}
+	}
 }
