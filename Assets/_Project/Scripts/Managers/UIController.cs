@@ -13,10 +13,28 @@ public class UIController : MonoBehaviour
 	}
 	
 	// Game
+	[SerializeField]
 	private Text timer;
+	public int Timer
+	{
+		get{return int.Parse(timer.text);}
+		set
+		{
+			timer.text = value.ToString();
+		}
+	}
+	[SerializeField]
 	private Text score;
+	public int Score
+	{
+		set
+		{
+			score.text = GameManager.Instance.Score.ToString();
+		}
+	}
 	
 	// EndGame
+	[SerializeField]
 	private Text gameState;
 	
 	
@@ -41,12 +59,16 @@ public class UIController : MonoBehaviour
 	public void RestartGame()
 	{
 		GameManager.Instance.RestartGame();
+		if(currentScene != "Game")
+		{
+			ChangeScene("Game");
+		}
 	}
 	
 	public void EndSetup()
 	{
 		int gmScore = GameManager.Instance.Score;
-		if(gmScore > 1000)
+		if(gmScore >= 7350)
 		{
 			gameState.text = "You Win!";
 		}
@@ -55,5 +77,10 @@ public class UIController : MonoBehaviour
 			gameState.text = "You Lose!";
 		}
 		score.text = gmScore.ToString();
+	}
+	
+	public void QuitGame()
+	{
+		Application.Quit();
 	}
 }

@@ -4,38 +4,62 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+	[SerializeField]
+	private Material[] materials = new Material[2];
+	
+	[SerializeField]
+	private float convertTime;
+	private float timer = 0;
+	private int score = 200;
+	
 	private bool isBad;
 	
-	public bool IsBad
+	void Start()
 	{
-		get
-		{
-			return isBad;
-		}
-		set
-		{
-			isBad = value;
-			
-			if(isBad)
-			{
-				//Change to bad material
-			}
-			else
-			{
-				//Change to original material
-			}
-		}
-	}
-	
-	private void OnDestroy()
-	{
+		isBad = Random.Range(0,100) > 60;
+		
 		if(isBad)
 		{
-			// Reduce points
+			GetComponent<Renderer>().material = materials[1];
+			score *= -1;
 		}
 		else
 		{
-			// Increase points
+			GetComponent<Renderer>().material = materials[0];
 		}
+	}
+	
+	void Update()
+	{
+		if(isBad)
+		{
+			if(timer >= convertTime)
+			{
+				score *= -1;
+				GetComponent<Renderer>().material = materials[0];
+				isBad = false;
+			}
+			timer += Time.deltaTime;
+		}
+	}
+	
+	void OnTriggerEnter(Collider other)
+	{
+		switch(other.tag)
+		{
+			case "Projectile":
+				GameManager.Instance.Score = score;
+				Destroy(other.gameObject);
+				Destroy(gameObject);
+				break;
+			case "Endpoint":
+				GameManager.Instance.EndGame();
+				break;
+		}
+	}
+	
+	void OnDestroy()
+	{
+		FindObjectOfType<TargetSpawner>().targets.Remove(gameObject);
 	}
 }

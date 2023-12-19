@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Endpoint : MonoBehaviour
 {
@@ -8,8 +9,11 @@ public class Endpoint : MonoBehaviour
 	{
 		if(other.CompareTag("Target"))
 		{
-			//Game Over
-			
+			if(GameManager.Instance.Score > 0 )
+			{
+				GameManager.Instance.Score = 2 * -GameManager.Instance.Score;
+			}
+			GameManager.Instance.EndGame();
 		}
 	}
 }
